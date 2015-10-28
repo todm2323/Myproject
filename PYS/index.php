@@ -481,23 +481,21 @@ for($i=1;$i<=mysql_num_rows($datanewsa);$i++)
                 <h1>廠商資料</h1>
             </div>
             <div data-role="collapsible" data-collapsed="false" data-theme="e">
-    <ul data-role="listview" data-inset="true" data-theme="e" data-dividertheme="a" data-filter="true" data-filter-placeholder="請輸入....">
-                                <li data-role="list-divider">廠商資料</li>
+    <ul data-role="listview" data-inset="true" data-theme="d" data-dividertheme="b" data-filter="true" data-filter-placeholder="請輸入....">
+                               
 <?php
 for($i=1;$i<=mysql_num_rows($datacompany);$i++)
 { $rs=mysql_fetch_assoc($datacompany);
 ?>
 
-                                <li>
-                                    <a>
-                                        <h1>公司名稱:<?php echo $rs["cname"]?></h1>
+                                <li class="ui-shadow">
+                                   
+                                        <h1 style="color:blue"><?php echo $rs["cname"]?></h1>
                                         <h4>聯絡人:<?php echo $rs["uname"]?></h4>
-                                        <h4>電話:<a href="tel://<?php echo $rs["phone"]?>"><?php echo $rs["phone"]?></a></h4>
-                                        <h4>電話:<?php echo $rs["phone"]?></h4>
-                                        <h4>手機:<?php echo $rs["cellphone"]?></h4>
-                                        <h4>地址:<?php echo $rs["address"]?></h4>
+                                        <h4>電話:<a href="tel://'<?php echo $rs["phone"]?>'"><?php echo $rs["phone"]?></a></h4>
+                                        <h4>手機:<a href="tel://'<?php echo $rs["cellphone"]?>'"><?php echo $rs["cellphone"]?></a></h4>
+                                        <h4>地址:<a href="geo:0,0?q='<?php echo $rs["address"]?>'"><?php echo $rs["address"]?></a></h4> 
                                         <h4>E-mail:<?php echo $rs["email"]?></h4>                          
-                                    </a >
                                 </li>
 <?php }?>
 </ul> 
