@@ -35,8 +35,6 @@ $(document).bind('mobileinit', function(){
 </script>
 <script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
-<script type="text/javascript" src="js/jquery.cycle.all.min.js"></script>
-<script src="js/jquery.touchwipe.1.1.1.js"></script>
 <script src="back.js"></script>
 <script>
 var clicks = 0;
@@ -46,7 +44,9 @@ var clicks = 0;
         document.getElementById("clicks1").innerHTML = clicks;
         document.getElementById("clicks2").innerHTML = clicks;
     };
-
+function newssubmit(){ 
+  document.getElementById("Newsform").submit();  
+} 
 </script>
 <style>
 .ui-li-thumb2, .ui-li-icon {
@@ -394,11 +394,13 @@ for($i=1;$i<=mysql_num_rows($datanews);$i++)
 ?>
 
                                 <li>
-                                    <a href="#fullnews" data-transition="slide">
+                                    <a href='fullnews.php?newsid=<?php echo $rs["id"]?>'>
                                         <h3><?if($rs{"time"}>=$t){?> <img src='PYS/new.gif'><?}?><?php echo $rs["date"]?></h3>  
                                         <h1><?php echo $rs["title"]?></h1>                 
                                     </a >
                                 </li>
+
+                                
  <?php }?>
  
 </ul> 
@@ -411,12 +413,17 @@ for($i=1;$i<=mysql_num_rows($datanewsa);$i++)
 { $rs=mysql_fetch_assoc($datanewsa);
 ?>
 
-                                <li>
-                                    <a href="#fullnews" data-transition="slide">
-                                        <h3><?if($rs{"time"}>=$t){?> <img src='PYS/new.gif'><?}?><?php echo $rs["date"]?></h3>  
-                                        <h1><?php echo $rs["title"]?></h1>                 
-                                    </a >
+                                <li >
+                                
+                                    <a href='fullnews.php?newsid=<?php echo $rs["id"]?>'>
+                                        <h3 id="date"><?if($rs{"time"}>=$t){?> <img src='PYS/new.gif'><?}?><?php echo $rs["date"]?></h3>  
+                                        <h1 id="title"><?php echo $rs["title"]?></h1>                                
+                                    </a>
+                                    
+
                                 </li>
+                            
+
  <?php }?>
 </ul> 
 </div>
@@ -511,5 +518,6 @@ for($i=1;$i<=mysql_num_rows($datacompany);$i++)
             </div>
 
             </div>
+
 </body>
 </html>
