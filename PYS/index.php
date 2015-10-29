@@ -15,6 +15,7 @@
    $sql = "SELECT * FROM tbl_user Where id = '$id'";
    $result = execute_sql("mydatabase", $sql, $link);
    $row = mysql_fetch_assoc($result);
+   $date = date ("Y-m-d" ,mktime(date('m'), date('d'), date('Y'))) ; 
    $datatoyota=mysql_query("select * from product where brand='TOYOTA'");
    $datanews=mysql_query("select * from news where class='新聞' ORDER BY date DESC");
    $datanewsa=mysql_query("select * from news where class='活動' ORDER BY date DESC");
@@ -44,9 +45,6 @@ var clicks = 0;
         document.getElementById("clicks1").innerHTML = clicks;
         document.getElementById("clicks2").innerHTML = clicks;
     };
-function newssubmit(){ 
-  document.getElementById("Newsform").submit();  
-} 
 </script>
 <style>
 .ui-li-thumb2, .ui-li-icon {
@@ -162,7 +160,7 @@ body {
   <?}?>
 <?if($passed=="TRUE"){?>
     <div class="ui-block-a">
-        <div class="ui-bar-c"> <a style="text-decoration:none" href="#" data-transition="slide">
+        <div class="ui-bar-c"> <a href='#fix' style="text-decoration:none" href="#" data-transition="slide">
         <img alt="alt..." src="PYS/fix.png" />
         <p style="text-align:center;">預約維修</p>
         </a>
@@ -247,7 +245,7 @@ body {
                         <li><a href="#product" data-icon="gear" data-transition="slide">產品介紹</a></li>
                         <?if($passed=="TRUE"&&$level=="user"){?>
                         <li><a href="#" data-icon="search" data-transition="slide"><span id="clicks1"style="color:red">0</span> 詢價單</a></li>
-                        <li><a href="#" data-icon="grid" data-transition="slide">預約維修</a></li>
+                        <li><a href='fix.php' data-icon="grid" data-transition="slide">預約維修</a></li>
                          <?}else if($level=="admin"){?>
                          <li><a href="#showcompany" data-icon="search" data-transition="slide">廠商資料</a></li>
                          <li><a href="#" data-icon="edit" data-transition="slide">維修紀錄</a></li>
@@ -328,7 +326,7 @@ body {
                         <li><a href="#product" data-icon="gear" data-transition="slide">產品介紹</a></li>
                         <?if($passed=="TRUE"&&$level=="user"){?>
                         <li><a href="#" data-icon="search" data-transition="slide"><span id="clicks1"style="color:red">0</span> 詢價單</a></li>
-                        <li><a href="#" data-icon="grid" data-transition="slide">預約維修</a></li>
+                        <li><a href='fix.php' data-icon="grid" data-transition="slide">預約維修</a></li>
                          <?}else if($level=="admin"){?>
                          <li><a href="#showcompany" data-icon="search" data-transition="slide">廠商資料</a></li>
                          <li><a href="#" data-icon="edit" data-transition="slide">維修紀錄</a></li>
@@ -345,14 +343,16 @@ body {
             </div>
     <div data-role="collapsible" data-collapsed="false" data-theme="e">
     <ul data-role="listview" data-inset="true" data-theme="e" data-dividertheme="a" data-filter="true" data-filter-placeholder="請輸入....">
+   
                                 <li data-role="list-divider">TOYOTA</li>
+
 <?php
 for($i=1;$i<=mysql_num_rows($datatoyota);$i++)
 { $rs=mysql_fetch_assoc($datatoyota);
 ?>
 
-                                <li  <?if($passed=="TRUE"&&$level=="user"){?>data-icon="plus"<?}else{?>  data-icon="false"<?}?>     onClick="onClick()">
-                                    <a>
+                                <li <?if($passed=="TRUE"&&$level=="user"){?>data-icon="plus"<?}else{?>  data-icon="false"<?}?>     onClick="onClick()">
+                                    <a <?if($level=="user"){?>href='orderproduct.php?productid=<?php echo $rs["id"]?>'<?}?>>
                                         <img class="ui-li-thumb2" src="<?php echo $rs["picture"]?>"/>
                                         <h1><?php echo $rs["productname"]?></h1>
                                         <p>重量:<?php echo $rs["weigh"]?></p>
@@ -518,6 +518,46 @@ for($i=1;$i<=mysql_num_rows($datacompany);$i++)
             </div>
 
             </div>
+
+<div data-role="page" id="fix">
+            <div data-role="header" data-position="fixed">
+
+                <h1>預約維修單</h1>
+            </div>
+            <div data-role="content" align="center">
+              <form action="fixpost.php" method="post"  name="myForm">
+                <div data-role="fieldcontain">
+                    <label for="date">日期</label>
+              <input type="date"name="date" id="date" value="<?php echo $date ?>" />
+              </div>
+              <div data-role="fieldcontain">
+              <label for="cname">公司名稱</label>
+            <input type="text" name="cname" id="cname"  value="<?php echo $row{"cname"} ?>" />
+             </div>
+             <div data-role="fieldcontain">
+             <label for="uname">姓名</label>
+             <input type="text" name="uname" id="uname" value="<?php echo $row{"uname"} ?>"/>
+              </div>
+              <div data-role="fieldcontain">
+          <label for="phone">聯絡電話</label>
+            <input type="text" name="phone" id="phone"  value="<?php echo $row{"phone"} ?>"/>
+        </div>
+            <div data-role="fieldcontain">
+            <label for="address">地址</label>
+            <input type="text" name="address" id="address" value="<?php echo $row{"address"} ?>" />
+            </div>
+          <div data-role="fieldcontain">
+            <label for="productname">機型</label>
+                  <input type="text" name="productname" id="productname"/>
+               </div>
+                <div data-role="fieldcontain">
+            <label for="content2">損壞情況</label>
+          <textarea class="ckeditor" rows="5" id="content2" name="content2"></textarea>
+               </div>
+                <input id="post" type="submit" data-theme="a" value="送出" />
+                </form>
+            </div>
+        </div>
 
 </body>
 </html>
