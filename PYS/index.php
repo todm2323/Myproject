@@ -565,16 +565,20 @@ for($i=1;$i<=mysql_num_rows($datacompany);$i++)
             </div>
 <div data-role="content">
 <div data-role="fieldcontain">
-<label for="inp_tw10">帳號</label>
-<input type="text" name="username" id="inp_tw10" />
+<label for="username2">帳號</label>
+<input type="text" name="username2" id="username2" />
 </div>
 <div data-role="fieldcontain">
-<label for="inp_tw11">密碼</label>
-<input type="password" name="password" id="inp_tw11" />
+<label for="password2">密碼</label>
+<input type="password" name="password2" id="password2" />
 </div>
 <div data-role="fieldcontain">
-<label for="inp_tw11">company name</label>
-<select>
+<label for="repassword2">sure密碼</label>
+<input type="repassword2" name="repassword2" id="repassword2" />
+</div>
+<div data-role="fieldcontain">
+<label for="cname2">company name</label>
+<select name="cname2" id="cname2">
 <?php
 for($i=1;$i<=mysql_num_rows($datacompany);$i++)
 { $rs=mysql_fetch_assoc($datacompany);
@@ -584,11 +588,7 @@ for($i=1;$i<=mysql_num_rows($datacompany);$i++)
  
 </select>
 </div>
-<div data-role="fieldcontain">
-<label for="inp_tw12">sure密碼</label>
-<input type="repassword" name="repassword" id="inp_tw12" />
-</div>
-<input id="login" type="submit" data-theme="b" value="sign up" />
+<input id="signup" type="submit" data-theme="b" value="sign up" />
 <button type="button" data-theme="c" onclick="location.href='#'" data-transition="slide">login</button>
 <button type="button" data-theme="c" onclick="location.href='#'" data-transition="slide">忘記密碼</button>
 </div>
