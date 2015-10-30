@@ -1,6 +1,5 @@
 <?
    session_start();
-  //檢查 cookie 中的 passed 變數是否等於 TRUE
   //$passed = $_COOKIE{"passed"};
   $id = $_SESSION["id"];
   //如果 cookie 中的 passed 變數不等於 TRUE
