@@ -1,7 +1,7 @@
 <?
    session_start();
   //檢查 cookie 中的 passed 變數是否等於 TRUE
-  $passed = $_COOKIE{"passed"};
+  //$passed = $_COOKIE{"passed"};
   $id = $_SESSION["id"];
   //如果 cookie 中的 passed 變數不等於 TRUE
   //表示尚未登入網站，將使用者導向首頁 index.htm
@@ -311,7 +311,7 @@ body {
 </div>
 <input id="login" type="submit" data-theme="b" value="登入" />
 <button type="button" data-theme="c" onclick="location.href='#'" data-transition="slide">忘記密碼</button>
-<button type="button" data-theme="a" onclick="location.href='#'" data-transition="slide">註冊</button>
+<button type="button" data-theme="a" onclick="location.href='#signup'" data-transition="slide">註冊</button>
 </div>
 
 
@@ -558,6 +558,45 @@ for($i=1;$i<=mysql_num_rows($datacompany);$i++)
                 </form>
             </div>
         </div>
-
+<div data-role="page" id="signup" data-add-back-btn="true" data-back-btn-text="回上一頁">
+            <div data-role="header" data-position="fixed">
+                <h1>signin</h1>
+            </div>
+<div data-role="content">
+<div data-role="fieldcontain">
+<label for="inp_tw10">帳號</label>
+<input type="text" name="username" id="inp_tw10" />
+</div>
+<div data-role="fieldcontain">
+<label for="inp_tw11">密碼</label>
+<input type="password" name="password" id="inp_tw11" />
+</div>
+<div data-role="fieldcontain">
+<label for="inp_tw11">company name</label>
+<select>
+<?php
+for($i=1;$i<=mysql_num_rows($datacompany);$i++)
+{ $rs=mysql_fetch_assoc($datacompany);
+?>
+ <option value="<?php echo $rs["cname"]?>"><?php echo $rs["cname"]?></option>
+<?php }?>
+ 
+</select>
+</div>
+<div data-role="fieldcontain">
+<label for="inp_tw12">sure密碼</label>
+<input type="repassword" name="repassword" id="inp_tw12" />
+</div>
+<input id="login" type="submit" data-theme="b" value="sign up" />
+<button type="button" data-theme="c" onclick="location.href='#'" data-transition="slide">login</button>
+<button type="button" data-theme="c" onclick="location.href='#'" data-transition="slide">忘記密碼</button>
+</div>
+<div data-role="footer" data-position="fixed">
+                <div data-role="navbar">
+                    <ul>
+                    </ul>
+                </div>
+            </div>
+            </div>
 </body>
 </html>
