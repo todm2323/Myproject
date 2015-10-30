@@ -160,14 +160,14 @@ body {
   <?}?>
 <?if($passed=="TRUE"){?>
     <div class="ui-block-a">
-        <div class="ui-bar-c"> <a href='#fix' style="text-decoration:none" href="#" data-transition="slide">
+        <div class="ui-bar-c"> <a href='#fix' style="text-decoration:none"  data-transition="slide">
         <img alt="alt..." src="PYS/fix.png" />
         <p style="text-align:center;">預約維修</p>
         </a>
         </div>
     </div>
     <div class="ui-block-b">
-        <div class="ui-bar-c"> <a style="text-decoration:none" href="#" data-transition="slide">
+        <div class="ui-bar-c"> <a style="text-decoration:none" href="#signup" data-transition="slide">
         <img alt="alt..." src="PYS/List.png" />
          <p style="text-align:center;">維修紀錄</p>
       </a>
@@ -311,7 +311,7 @@ body {
 </div>
 <input id="login" type="submit" data-theme="b" value="登入" />
 <button type="button" data-theme="c" onclick="location.href='#'" data-transition="slide">忘記密碼</button>
-<button type="button" data-theme="a" onclick="location.href='#signup'" data-transition="slide">註冊</button>
+<button type="button" data-theme="a" onclick="location.href='#'" data-transition="slide">註冊</button>
 </div>
 
 
@@ -572,7 +572,25 @@ for($i=1;$i<=mysql_num_rows($datacompany);$i++)
 <label for="inp_tw11">密碼</label>
 <input type="password" name="password" id="inp_tw11" />
 </div>
-
+<div data-role="fieldcontain">
+<label for="inp_tw11">company name</label>
+<select>
+<?php
+for($i=1;$i<=mysql_num_rows($datacompany);$i++)
+{ $rs=mysql_fetch_assoc($datacompany);
+?>
+ <option value="<?php echo $rs["cname"]?>"><?php echo $rs["cname"]?></option>
+<?php }?>
+ 
+</select>
+</div>
+<div data-role="fieldcontain">
+<label for="inp_tw12">sure密碼</label>
+<input type="repassword" name="repassword" id="inp_tw12" />
+</div>
+<input id="login" type="submit" data-theme="b" value="sign up" />
+<button type="button" data-theme="c" onclick="location.href='#'" data-transition="slide">login</button>
+<button type="button" data-theme="c" onclick="location.href='#'" data-transition="slide">忘記密碼</button>
 </div>
 <div data-role="footer" data-position="fixed">
                 <div data-role="navbar">
