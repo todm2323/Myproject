@@ -20,6 +20,7 @@
    $datanews=mysql_query("select * from news where class='新聞' ORDER BY date DESC");
    $datanewsa=mysql_query("select * from news where class='活動' ORDER BY date DESC");
    $datacompany=mysql_query("select * from tbl_user");
+   $signupcompany=mysql_query("select * from tbl_user where username=''");
    $t=strtotime(date ("Y-m-d H:i:s" ,mktime(date('H')+8, date('i'), date('s'), date('m'), date('d'), date('Y'))));
 ?>
 <!DOCTYPE html>
@@ -116,8 +117,8 @@ body {
 </head>
 <body>
       <div data-role="page" id="home">
-<div data-role="header" data-theme="e" style="text-align:center;">
-                <img src="PYS/PYS4.PNG" />
+<div data-role="header" data-theme="d" style="text-align:center;">
+                <img src="PYS/PYS4.gif" height="150" width="400" />
             </div>
 
   <div data-role="main" class="ui-content">
@@ -167,7 +168,7 @@ body {
         </div>
     </div>
     <div class="ui-block-b">
-        <div class="ui-bar-c"> <a style="text-decoration:none" href="#signup" data-transition="slide">
+        <div class="ui-bar-c"> <a style="text-decoration:none" href="#" data-transition="slide">
         <img alt="alt..." src="PYS/List.png" />
          <p style="text-align:center;">維修紀錄</p>
       </a>
@@ -271,7 +272,7 @@ body {
               </div>
               <div data-role="fieldcontain">
               <label for="cname">公司名稱</label>
-            <input type="text" name="cname" id="cname"  value="<?php echo $row{"cname"} ?>" />
+            <input type="text" name="cname" id="cname"  value="<?php echo $row{"cname"} ?>" readonly/>
              </div>
             <div data-role="fieldcontain">
             <label for="address">地址</label>
@@ -279,15 +280,15 @@ body {
             </div>
           <div data-role="fieldcontain">
           <label for="phone">公司電話</label>
-            <input type="text" name="phone" id="phone"  value="<?php echo $row{"phone"} ?>"/>
+            <input type="tel" name="phone" id="phone"  value="<?php echo $row{"phone"} ?>"/>
         </div>
           <div data-role="fieldcontain">
          <label for="cellphone">手機</label>
-        <input type="text" name="cellphone" id="cellphone" value="<?php echo $row{"cellphone"} ?>" />
+        <input type="tel" name="cellphone" id="cellphone" value="<?php echo $row{"cellphone"} ?>" />
          </div>
           <div data-role="fieldcontain">
             <label for="email">E-mail</label>
-                  <input type="text" name="email" id="email"  value="<?php echo $row{"email"} ?>"/>
+                  <input type="email" name="email" id="email"  value="<?php echo $row{"email"} ?>"/>
                </div>
                 <input id="update" type="submit" data-theme="a" value="修改資料" />
                 <button type="button" data-theme="a" onclick="location.href='#editpassword'" data-transition="slide">修改密碼</button>
@@ -311,7 +312,7 @@ body {
 </div>
 <input id="login" type="submit" data-theme="b" value="登入" />
 <button type="button" data-theme="c" onclick="location.href='#'" data-transition="slide">忘記密碼</button>
-<button type="button" data-theme="a" onclick="location.href='#'" data-transition="slide">註冊</button>
+<button type="button" data-theme="a" onclick="location.href='#signup'" data-transition="slide">註冊</button>
 </div>
 
 
@@ -465,12 +466,10 @@ for($i=1;$i<=mysql_num_rows($datanewsa);$i++)
             </div>
 
  <div data-role="page" id="postnews" data-add-back-btn="true" data-back-btn-text="回上一頁">
-<div data-role="header" data-theme="e" style="text-align:center;">
-                <img src="PYS/PYS.PNG" />
-                 <div data-role="header" data-position="fixed">
+<div data-role="header" data-theme="a" style="text-align:center;"  data-position="fixed">             
                 <h1>發布公告</h1>
             </div>
-            </div>
+            <div data-role="content" align="center">
             <form id="noticeboard-form" action="post.php" method="POST">
   <input type="text" class="form-control" name="title" id="title" placeholder="輸入標題"></input>
   <select class="form-control" name="class" id="class">
@@ -481,6 +480,7 @@ for($i=1;$i<=mysql_num_rows($datanewsa);$i++)
   <textarea class="ckeditor" rows="5" id="content" name="content" placeholder="內容"></textarea>
   <button type="submit" class="btn btn-primary" data-theme="b">Submit</button>
   </form>
+</div> 
 </div> 
 
  <div data-role="page" id="showcompany" data-add-back-btn="true" data-back-btn-text="回上一頁">
@@ -540,7 +540,7 @@ for($i=1;$i<=mysql_num_rows($datacompany);$i++)
               </div>
               <div data-role="fieldcontain">
           <label for="phone">聯絡電話</label>
-            <input type="text" name="phone" id="phone"  value="<?php echo $row{"phone"} ?>"/>
+            <input type="tel" name="phone" id="phone"  value="<?php echo $row{"phone"} ?>"/>
         </div>
             <div data-role="fieldcontain">
             <label for="address">地址</label>
@@ -561,8 +561,9 @@ for($i=1;$i<=mysql_num_rows($datacompany);$i++)
 
         <div data-role="page" id="signup" data-add-back-btn="true" data-back-btn-text="回上一頁">
             <div data-role="header" data-position="fixed">
-                <h1>signin</h1>
+                <h1>會員註冊</h1>
             </div>
+            <form name="signup" action="signup.php" method="post" data-ajax="false">
 <div data-role="content">
 <div data-role="fieldcontain">
 <label for="username2">帳號</label>
@@ -573,28 +574,45 @@ for($i=1;$i<=mysql_num_rows($datacompany);$i++)
 <input type="password" name="password2" id="password2" />
 </div>
 <div data-role="fieldcontain">
-<label for="repassword2">sure密碼</label>
-<input type="repassword2" name="repassword2" id="repassword2" />
+<label for="repassword2">確認密碼</label>
+<input type="password" name="repassword2" id="repassword2" />
 </div>
 <div data-role="fieldcontain">
-<label for="cname2">company name</label>
-<select name="cname2" id="cname2">
-<?php
-for($i=1;$i<=mysql_num_rows($datacompany);$i++)
-{ $rs=mysql_fetch_assoc($datacompany);
-?>
- <option value="<?php echo $rs["cname"]?>"><?php echo $rs["cname"]?></option>
-<?php }?>
- 
-</select>
+<label for="uname2">姓名</label>
+<input type="text" name="uname2" id="uname2" />
 </div>
-<input id="signup" type="submit" data-theme="b" value="sign up" />
-<button type="button" data-theme="c" onclick="location.href='#'" data-transition="slide">login</button>
+<div data-role="fieldcontain">
+<label for="cellphone2">聯絡電話</label>
+<input type="tel" name="cellphone2" id="cellphone2" />
+</div>
+<div data-role="fieldcontain">
+<label for="email2">E-mail</label>
+<input type="email" name="email2" id="email2" />
+</div>
+<div data-role="fieldcontain">
+<label for="cname2">公司名稱</label>
+  <select class="form-control" name="cname2" id="cname2">
+<?php
+for($i=1;$i<=mysql_num_rows($signupcompany);$i++)
+{ $rs=mysql_fetch_assoc($signupcompany);
+?>
+ <option value="<?php echo $rs["cname"]?>"><?php echo $rs["cname"]?></option>                       
+<?php }?>
+
+  </select>
+
+</div>
+<input id="signup" type="submit" data-theme="b" value="註冊" />
+<button type="button" data-theme="c" onclick="location.href='#member'">登入</button>
 <button type="button" data-theme="c" onclick="location.href='#'" data-transition="slide">忘記密碼</button>
+</form>
+
 </div>
 <div data-role="footer" data-position="fixed">
                 <div data-role="navbar">
                     <ul>
+                        <li><a href="#home" data-icon="home" data-transition="slide">回首頁</a></li>
+                        <li><a href="#product" data-icon="edit" data-transition="slide">產品介紹</a></li>
                     </ul>
                 </div>
             </div>
