@@ -572,25 +572,7 @@ for($i=1;$i<=mysql_num_rows($datacompany);$i++)
 <label for="inp_tw11">密碼</label>
 <input type="password" name="password" id="inp_tw11" />
 </div>
-<div data-role="fieldcontain">
-<label for="inp_tw11">company name</label>
-<select>
-<?php
-for($i=1;$i<=mysql_num_rows($datacompany);$i++)
-{ $rs=mysql_fetch_assoc($datacompany);
-?>
- <option value="<?php echo $rs["cname"]?>"><?php echo $rs["cname"]?></option>
-<?php }?>
- 
-</select>
-</div>
-<div data-role="fieldcontain">
-<label for="inp_tw12">sure密碼</label>
-<input type="repassword" name="repassword" id="inp_tw12" />
-</div>
-<input id="login" type="submit" data-theme="b" value="sign up" />
-<button type="button" data-theme="c" onclick="location.href='#'" data-transition="slide">login</button>
-<button type="button" data-theme="c" onclick="location.href='#'" data-transition="slide">忘記密碼</button>
+
 </div>
 <div data-role="footer" data-position="fixed">
                 <div data-role="navbar">
