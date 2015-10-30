@@ -517,7 +517,7 @@ for($i=1;$i<=mysql_num_rows($datacompany);$i++)
             </div>
             </div>
 
-            </div>
+         
 
 <div data-role="page" id="fix">
             <div data-role="header" data-position="fixed">
