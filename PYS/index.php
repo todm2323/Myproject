@@ -21,6 +21,7 @@
    $datacompany=mysql_query("select * from tbl_user");
    $signupcompany=mysql_query("select * from tbl_user where username=''");
    $fixrecord=mysql_query("select * from maintain where  uid = '$id' ORDER BY date DESC");
+   $adminfixrecord=mysql_query("select * from maintain ORDER BY date DESC");
    $t=strtotime(date ("Y-m-d H:i:s" ,mktime(date('H')+8, date('i'), date('s'), date('m'), date('d'), date('Y'))));
 ?>
 <!DOCTYPE html>
@@ -30,14 +31,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css" />
 <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
+<script src="back.js"></script>
 <script>
 $(document).bind('mobileinit', function(){
   $.mobile.ajaxEnabled=false;
 });
 </script>
-<script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
-<script src="back.js"></script>
 <script>
 var clicks = 0;
     function onClick() {
@@ -118,7 +118,7 @@ body {
 <body>
       <div data-role="page" id="home">
 <div data-role="header" data-theme="d" style="text-align:center;">
-                <img src="PYS/PYS4.gif" height="150" width="300"  align="center" />
+                <img src="PYS/PYS4.gif" height="150" width="400"  align="center" />
             </div>
 
   <div data-role="main" class="ui-content">
@@ -169,7 +169,7 @@ body {
     </div>
     <?if($level=="admin"){?>
     <div class="ui-block-b">
-        <div class="ui-bar-c"> <a style="text-decoration:none" href="#" data-transition="slide">
+        <div class="ui-bar-c"> <a style="text-decoration:none" href="#adminfixrecord" data-transition="slide">
         <img alt="alt..." src="PYS/List.png" />
          <p style="text-align:center;">維修紀錄</p>
       </a>
@@ -259,7 +259,7 @@ body {
                         <li><a href='fix.php' data-icon="grid" data-transition="slide">預約維修</a></li>
                          <?}else if($level=="admin"){?>
                          <li><a href="#showcompany" data-icon="search" data-transition="slide">廠商資料</a></li>
-                         <li><a href="#" data-icon="edit" data-transition="slide">維修紀錄</a></li>
+                         <li><a href="#adminfixrecord" data-icon="edit" data-transition="slide">維修紀錄</a></li>
                          <?}?>
                         <li><a href="#member" data-icon="info" data-transition="slide">會員資料</a></li>
                     </ul>
@@ -636,13 +636,18 @@ for($i=1;$i<=mysql_num_rows($signupcompany);$i++)
 <form>
     <input id="filterTable-input" data-type="search">
 </form>
+<style>
+tr {
+    border-bottom: 1px solid #d6d6d6;
+}
+</style>
     <table data-role="table" class="ui-responsive ui-shadow" data-mode="columntoggle" data-filter="true" data-input="#filterTable-input">
       <thead>
         <tr>
+          <th data-priority="1"></th>
           <th data-priority="1">日期</th>
           <th data-priority="1">機型</th>
           <th data-priority="2">損壞情形</th>
-          <th data-priority="1">維修狀態</th>
           <th data-priority="3">維修日期</th>
           <th data-priority="4">維修人員</th>
         </tr>
@@ -653,11 +658,11 @@ for($i=1;$i<=mysql_num_rows($signupcompany);$i++)
 for($i=1;$i<=mysql_num_rows($fixrecord);$i++)
 { $rs=mysql_fetch_assoc($fixrecord);
 ?>
-<tr>
+<tr >
+          <td ><?php if($rs["state"]=="已維修"){echo "<img src='PYS/green.png'/>";}else if($rs["state"]=="維修中"){echo "<img src='PYS/yellow.png'/>";} else{echo "<img src='PYS/red.png'/>";}?></td>
           <td><?php echo $rs["date"]?></td>
           <td><?php echo $rs["pid"]?></td>
           <td><?php echo $rs["content"]?></td>
-          <td><?php echo $rs["state"]?></td>
           <td><?php echo $rs["fixdate"]?></td>
           <td><?php echo $rs["fixuname"]?></td>
            </tr>
@@ -675,6 +680,63 @@ for($i=1;$i<=mysql_num_rows($fixrecord);$i++)
                     </ul>
                 </div>
             </div>
-            </di
+            </div>
+
+            <div data-role="page" id="adminfixrecord" data-add-back-btn="true" data-back-btn-text="回上一頁">
+                 <div data-role="header" data-position="fixed">
+                <h1>維修紀錄</h1>
+            </div>
+             <div data-role="main" class="ui-content">
+<form>
+    <input id="filterTable-input" data-type="search">
+</form>
+<style>
+tr {
+    border-bottom: 1px solid #d6d6d6;
+}
+</style>
+
+    <table data-role="table" class="ui-responsive ui-shadow" data-mode="columntoggle" data-filter="true" data-input="#filterTable-input">
+      <thead>
+        <tr>
+          <th data-priority="1"></th>
+          <th data-priority="1">日期</th>
+          <th data-priority="1">公司名稱</th>
+          <th data-priority="2">機型</th>
+          <th data-priority="2">損壞情形</th>
+          <th data-priority="2">維修日期</th>
+          <th data-priority="2">維修人員</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+          <?php
+for($i=1;$i<=mysql_num_rows($adminfixrecord);$i++)
+{ $rs=mysql_fetch_assoc($adminfixrecord);
+?>
+<tr onclick="location.href='fullfixrecord.php?fixid=<?php echo $rs["id"]?>'">
+         <td><?php if($rs["state"]=="已維修"){echo "<img src='PYS/green.png'/>";}else if($rs["state"]=="維修中"){echo "<img src='PYS/yellow.png'/>";} else{echo "<img src='PYS/red.png'/>";}?></td>
+          <td><?php echo $rs["date"]?></td>
+          <td><?php echo $rs["cname"]?></td>
+          <td><?php echo $rs["pid"]?></td>
+          <td><?php echo $rs["content"]?></td>
+          <td><?php echo $rs["fixdate"]?></td>
+          <td><?php echo $rs["fixuname"]?></td>
+           </tr>
+ <?php }?>
+       
+      </tbody>
+    </table>
+
+  </div>
+<div data-role="footer" data-position="fixed">
+                <div data-role="navbar">
+                    <ul>
+                        <li><a href="#home" data-icon="home" data-transition="slide">回首頁</a></li>
+                        <li><a href="#member" data-icon="edit" data-transition="slide">會員資料</a></li>
+                    </ul>
+                </div>
+            </div>
+            </div>
 </body>
 </html>
