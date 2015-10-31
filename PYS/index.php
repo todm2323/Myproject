@@ -29,15 +29,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css" />
-<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-<script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
 <script src="back.js"></script>
-<script>
-$(document).bind('mobileinit', function(){
-  $.mobile.ajaxEnabled=false;
-});
-</script>
 <script>
 var clicks = 0;
     function onClick() {
@@ -161,7 +156,7 @@ body {
   <?}?>
 <?if($passed=="TRUE"){?>
     <div class="ui-block-a">
-        <div class="ui-bar-c"> <a href='#fix' style="text-decoration:none"  data-transition="slide">
+        <div class="ui-bar-c"> <a href='#fix' data-ajax="false" style="text-decoration:none"  data-transition="slide">
         <img alt="alt..." src="PYS/fix.png" />
         <p style="text-align:center;">預約維修</p>
         </a>
@@ -256,10 +251,10 @@ body {
                         <li><a href="#product" data-icon="gear" data-transition="slide">產品介紹</a></li>
                         <?if($passed=="TRUE"&&$level=="user"){?>
                         <li><a href="#" data-icon="search" data-transition="slide"><span id="clicks1"style="color:red">0</span> 詢價單</a></li>
-                        <li><a href='fix.php' data-icon="grid" data-transition="slide">預約維修</a></li>
+                        <li><a href='fix.php' data-ajax="false" data-icon="grid" data-transition="slide">預約維修</a></li>
                          <?}else if($level=="admin"){?>
                          <li><a href="#showcompany" data-icon="search" data-transition="slide">廠商資料</a></li>
-                         <li><a href="#adminfixrecord" data-icon="edit" data-transition="slide">維修紀錄</a></li>
+                         <li><a href="#adminrecord" data-icon="edit" data-transition="slide">維修紀錄</a></li>
                          <?}?>
                         <li><a href="#member" data-icon="info" data-transition="slide">會員資料</a></li>
                     </ul>
@@ -272,7 +267,7 @@ body {
             </div>
             <div data-role="content" align="center">
               <?if($passed=="TRUE"){?>
-              <form action="update.php" method="post"  name="myForm">
+              <form action="update.php" method="post"  name="myForm" data-ajax="false">
                 <div data-role="fieldcontain">
               <p type="text" name="username" id="username" ><?php echo $row["username"]?>  您好</p>
               </div>
@@ -305,7 +300,7 @@ body {
                <?if($level=="admin"){?>
                <button type="button" data-theme="a" onclick="location.href='#postnews'">發布公告</button>
                <?}?>
-                <button type="button" data-theme="b" onclick="location.href='logoutsuccess.php'">登出</button>
+                <button type="button" data-theme="b" data-ajax="false" onclick="location.href='logoutsuccess.php'">登出</button>
                 </form>
                 <?}else{?>
                 <form name="vote" action="login.php" method="post" data-ajax="false">
@@ -337,7 +332,7 @@ body {
                         <li><a href="#product" data-icon="gear" data-transition="slide">產品介紹</a></li>
                         <?if($passed=="TRUE"&&$level=="user"){?>
                         <li><a href="#" data-icon="search" data-transition="slide"><span id="clicks1"style="color:red">0</span> 詢價單</a></li>
-                        <li><a href='fix.php' data-icon="grid" data-transition="slide">預約維修</a></li>
+                        <li><a href='fix.php' data-icon="grid" data-transition="slide" data-ajax="false">預約維修</a></li>
                          <?}else if($level=="admin"){?>
                          <li><a href="#showcompany" data-icon="search" data-transition="slide">廠商資料</a></li>
                          <li><a href="#" data-icon="edit" data-transition="slide">維修紀錄</a></li>
@@ -480,7 +475,7 @@ for($i=1;$i<=mysql_num_rows($datanewsa);$i++)
                 <h1>發布公告</h1>
             </div>
             <div data-role="content" align="center">
-            <form id="noticeboard-form" action="post.php" method="POST">
+            <form id="noticeboard-form" action="post.php" method="POST" data-ajax="false">
   <input type="text" class="form-control" name="title" id="title" placeholder="輸入標題"></input>
   <select class="form-control" name="class" id="class">
     <option value="新聞">新聞</option>
@@ -535,7 +530,7 @@ for($i=1;$i<=mysql_num_rows($datacompany);$i++)
                 <h1>預約維修單</h1>
             </div>
             <div data-role="content" align="center">
-              <form action="fixpost.php" method="post"  name="myForm">
+              <form action="fixpost.php" method="post"  name="myForm" data-ajax="false" >
                 <div data-role="fieldcontain">
                     <label for="date">日期</label>
               <input type="text"name="date" id="date" value="<?php echo $date ?>" />
@@ -588,6 +583,18 @@ for($i=1;$i<=mysql_num_rows($datacompany);$i++)
 <input type="password" name="repassword2" id="repassword2" />
 </div>
 <div data-role="fieldcontain">
+<label for="cname2">公司名稱</label>
+  <select class="form-control" name="cname2" id="cname2">
+<?php
+for($i=1;$i<=mysql_num_rows($signupcompany);$i++)
+{ $rs=mysql_fetch_assoc($signupcompany);
+?>
+ <option value="<?php echo $rs["cname"]?>"><?php echo $rs["cname"]?></option>                       
+<?php }?>
+
+  </select>
+</div>
+<div data-role="fieldcontain">
 <label for="uname2">姓名</label>
 <input type="text" name="uname2" id="uname2" />
 </div>
@@ -599,19 +606,7 @@ for($i=1;$i<=mysql_num_rows($datacompany);$i++)
 <label for="email2">E-mail</label>
 <input type="email" name="email2" id="email2" />
 </div>
-<div data-role="fieldcontain">
-<label for="cname2">公司名稱</label>
-  <select class="form-control" name="cname2" id="cname2">
-<?php
-for($i=1;$i<=mysql_num_rows($signupcompany);$i++)
-{ $rs=mysql_fetch_assoc($signupcompany);
-?>
- <option value="<?php echo $rs["cname"]?>"><?php echo $rs["cname"]?></option>                       
-<?php }?>
 
-  </select>
-
-</div>
 <input id="signup" type="submit" data-theme="b" value="註冊" />
 <button type="button" data-theme="c" onclick="location.href='#member'">登入</button>
 <button type="button" data-theme="c" onclick="location.href='#'" data-transition="slide">忘記密碼</button>
@@ -641,7 +636,7 @@ tr {
     border-bottom: 1px solid #d6d6d6;
 }
 </style>
-    <table data-role="table" class="ui-responsive ui-shadow" data-mode="columntoggle" data-filter="true" data-input="#filterTable-input">
+    <table data-role="table" class="ui-responsive ui-shadow" data-mode="columntoggle" data-filter="true" data-input="#filterTable-input" data-column-btn-text="更多欄位..">
       <thead>
         <tr>
           <th data-priority="1"></th>
@@ -688,15 +683,14 @@ for($i=1;$i<=mysql_num_rows($fixrecord);$i++)
             </div>
              <div data-role="main" class="ui-content">
 <form>
-    <input id="filterTable-input" data-type="search">
+    <input id="filterTable" data-type="search">
 </form>
 <style>
 tr {
     border-bottom: 1px solid #d6d6d6;
 }
 </style>
-
-    <table data-role="table" class="ui-responsive ui-shadow" data-mode="columntoggle" data-filter="true" data-input="#filterTable-input">
+    <table data-role="table" class="ui-responsive ui-shadow" data-mode="columntoggle" data-filter="true" data-input="#filterTable" data-column-btn-text="更多欄位..">
       <thead>
         <tr>
           <th data-priority="1"></th>
