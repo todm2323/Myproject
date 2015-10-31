@@ -14,12 +14,13 @@
    $sql = "SELECT * FROM tbl_user Where id = '$id'";
    $result = execute_sql("mydatabase", $sql, $link);
    $row = mysql_fetch_assoc($result);
-   $date = date ("Y-m-d" ,mktime(date('m'), date('d'), date('Y'))) ; 
+   $date = date ("Y/m/d" ,mktime(date('m'), date('d'), date('Y'))) ; 
    $datatoyota=mysql_query("select * from product where brand='TOYOTA'");
    $datanews=mysql_query("select * from news where class='新聞' ORDER BY date DESC");
    $datanewsa=mysql_query("select * from news where class='活動' ORDER BY date DESC");
    $datacompany=mysql_query("select * from tbl_user");
    $signupcompany=mysql_query("select * from tbl_user where username=''");
+   $fixrecord=mysql_query("select * from maintain where  uid = '$id' ORDER BY date DESC");
    $t=strtotime(date ("Y-m-d H:i:s" ,mktime(date('H')+8, date('i'), date('s'), date('m'), date('d'), date('Y'))));
 ?>
 <!DOCTYPE html>
@@ -117,7 +118,7 @@ body {
 <body>
       <div data-role="page" id="home">
 <div data-role="header" data-theme="d" style="text-align:center;">
-                <img src="PYS/PYS4.gif" height="150" width="400" />
+                <img src="PYS/PYS4.gif" height="150" width="300"  align="center" />
             </div>
 
   <div data-role="main" class="ui-content">
@@ -166,6 +167,7 @@ body {
         </a>
         </div>
     </div>
+    <?if($level=="admin"){?>
     <div class="ui-block-b">
         <div class="ui-bar-c"> <a style="text-decoration:none" href="#" data-transition="slide">
         <img alt="alt..." src="PYS/List.png" />
@@ -173,6 +175,15 @@ body {
       </a>
         </div>
     </div>
+    <?}else{?>
+    <div class="ui-block-b">
+        <div class="ui-bar-c"> <a style="text-decoration:none" href="#fixrecord" data-transition="slide">
+        <img alt="alt..." src="PYS/List.png" />
+         <p style="text-align:center;">維修紀錄</p>
+      </a>
+        </div>
+    </div>
+      <?}?>
     <?}?>
     <div class="ui-block-c">
         <div class="ui-bar-c"> <a style="text-decoration:none" href="#member" data-transition="slide">
@@ -527,7 +538,7 @@ for($i=1;$i<=mysql_num_rows($datacompany);$i++)
               <form action="fixpost.php" method="post"  name="myForm">
                 <div data-role="fieldcontain">
                     <label for="date">日期</label>
-              <input type="date"name="date" id="date" value="<?php echo $date ?>" />
+              <input type="text"name="date" id="date" value="<?php echo $date ?>" />
               </div>
               <div data-role="fieldcontain">
               <label for="cname">公司名稱</label>
@@ -617,5 +628,53 @@ for($i=1;$i<=mysql_num_rows($signupcompany);$i++)
             </div>
             </div>
 
+ <div data-role="page" id="fixrecord" data-add-back-btn="true" data-back-btn-text="回上一頁">
+                 <div data-role="header" data-position="fixed">
+                <h1>維修紀錄</h1>
+            </div>
+             <div data-role="main" class="ui-content">
+<form>
+    <input id="filterTable-input" data-type="search">
+</form>
+    <table data-role="table" class="ui-responsive ui-shadow" data-mode="columntoggle" data-filter="true" data-input="#filterTable-input">
+      <thead>
+        <tr>
+          <th data-priority="1">日期</th>
+          <th data-priority="1">機型</th>
+          <th data-priority="2">損壞情形</th>
+          <th data-priority="1">維修狀態</th>
+          <th data-priority="3">維修日期</th>
+          <th data-priority="4">維修人員</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+          <?php
+for($i=1;$i<=mysql_num_rows($fixrecord);$i++)
+{ $rs=mysql_fetch_assoc($fixrecord);
+?>
+<tr>
+          <td><?php echo $rs["date"]?></td>
+          <td><?php echo $rs["pid"]?></td>
+          <td><?php echo $rs["content"]?></td>
+          <td><?php echo $rs["state"]?></td>
+          <td><?php echo $rs["fixdate"]?></td>
+          <td><?php echo $rs["fixuname"]?></td>
+           </tr>
+ <?php }?>
+       
+      </tbody>
+    </table>
+
+  </div>
+<div data-role="footer" data-position="fixed">
+                <div data-role="navbar">
+                    <ul>
+                        <li><a href="#home" data-icon="home" data-transition="slide">回首頁</a></li>
+                        <li><a href="#member" data-icon="edit" data-transition="slide">會員資料</a></li>
+                    </ul>
+                </div>
+            </div>
+            </di
 </body>
 </html>

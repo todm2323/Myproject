@@ -18,6 +18,6 @@ echo "<SCRIPT language='javascript'>";
     echo "window.alert('維修單已送出')"; 
     echo "</SCRIPT>"; 
     echo "<script language='javascript'>"; 
-    echo "location.href='index.php'"; 
+    echo "location.href='index.php#fixrecord'"; 
     echo "</script>"; 
 ?>
