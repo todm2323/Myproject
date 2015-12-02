@@ -17,7 +17,7 @@
     echo "window.alert('請輸入密碼')"; 
     echo "</SCRIPT>"; 
     echo "<script language='javascript'>"; 
-    echo "location.href='index.php#editpassword'"; 
+    echo "history.back();"; 
     echo "</script>"; 
     }
     else if(strlen($setpassword)<=5){
@@ -25,7 +25,7 @@
     echo "window.alert('密碼設定請超過5個字元')"; 
     echo "</SCRIPT>"; 
     echo "<script language='javascript'>"; 
-    echo "location.href='index.php#editpassword'"; 
+    echo "history.back();"; 
     echo "</script>"; 
     }
 	else if($checkpassword!=$password||$setpassword!= $repassword){
@@ -33,7 +33,7 @@
     echo "window.alert('確認密碼錯誤，請重新輸入')"; 
     echo "</SCRIPT>"; 
     echo "<script language='javascript'>"; 
-    echo "location.href='index.php#editpassword'"; 
+    echo "history.back();"; 
     echo "</script>"; 
     }
     else{

@@ -13,7 +13,14 @@ session_start();
   //檢查帳號密碼是否正確
   $sql = "SELECT * FROM tbl_user Where username = '$username' AND password = '$password'";
   $result = execute_sql("mydatabase", $sql, $link);
-  
+  if ($username==""||$password==""){
+    echo "<SCRIPT language='javascript'>"; 
+    echo "window.alert('請輸入帳號密碼')"; 
+    echo "</SCRIPT>"; 
+    echo "<script language='javascript'>"; 
+    echo "history.back();";  
+    echo "</script>"; 
+  }
   if (mysql_num_rows($result) == 0)
   {
     //釋放 $result 佔用的記憶體
@@ -25,7 +32,7 @@ session_start();
     echo "window.alert('帳號或密碼錯誤')"; 
     echo "</SCRIPT>"; 
     echo "<script language='javascript'>"; 
-    echo "location.href='index.php#member'"; 
+    echo "history.back();";
     echo "</script>"; 
 	
   }

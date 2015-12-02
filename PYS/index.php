@@ -22,6 +22,15 @@
    $signupcompany=mysql_query("select * from tbl_user where username=''");
    $fixrecord=mysql_query("select * from maintain where  uid = '$id' ORDER BY date DESC");
    $adminfixrecord=mysql_query("select * from maintain ORDER BY date DESC");
+   $sqlcount = "select * from maintain where state='待維修'";
+   $sqlordercount = "select * from orders  Where uid = '$id'";
+   $sqlcountuser = "select * from maintain where state='待維修' and uid = '$id'";
+   $resultcount = execute_sql("mydatabase", $sqlcount, $link);
+   $resultcountuser = execute_sql("mydatabase", $sqlcountuser, $link);
+   $resultordercount = execute_sql("mydatabase", $sqlordercount, $link);
+   $rowcount = mysql_num_rows($resultcount);
+   $rowcountuser = mysql_num_rows($resultcountuser);
+   $rowordercount = mysql_num_rows($resultordercount);
    $t=strtotime(date ("Y-m-d H:i:s" ,mktime(date('H')+8, date('i'), date('s'), date('m'), date('d'), date('Y'))));
 ?>
 <!DOCTYPE html>
@@ -29,6 +38,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="jquery.mobile.theme.css" />
 <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
 <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
 <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
@@ -112,8 +122,8 @@ body {
 </head>
 <body>
       <div data-role="page" id="home">
-<div data-role="header" data-theme="d" style="text-align:center;">
-                <img src="PYS/PYS4.gif" height="150" width="400"  align="center" />
+<div data-role="header" data-theme="a" style="text-align:center;">
+                <img src="PYS/icon.jpg" style="width: 100%;max-height: 100%" align="center" />
             </div>
 
   <div data-role="main" class="ui-content">
@@ -121,14 +131,14 @@ body {
    <div class="ui-grid-b">
     
     <div class="ui-block-a">
-      <div class="ui-bar-c"> <a style="text-decoration:none" href="#news" data-transition="slide">
+      <div > <a style="text-decoration:none" href="#news" data-transition="slide">
         <img src="PYS/Calendar.png" />
         <p style="text-align:center;">最新消息</p>
         </a>
         </div>
     </div>
     <div class="ui-block-b">
-      <div class="ui-bar-c"> <a style="text-decoration:none" href="#product" data-transition="slide">
+      <div > <a style="text-decoration:none" href="#product" data-transition="slide">
         <img src="PYS/product.png" />
         <p style="text-align:center;">產品介紹</p>
         </a>
@@ -137,7 +147,7 @@ body {
     <?if($passed=="TRUE"){?>
     <?if($level=="admin"){?>
     <div class="ui-block-c">
-         <div class="ui-bar-c"> <a style="text-decoration:none" href="#showcompany" data-transition="slide">
+         <div > <a style="text-decoration:none" href="#showcompany" data-transition="slide">
         <img alt="alt..." src="PYS/company.png" />
          <p style="text-align:center;">廠商資料</p>
         </a>
@@ -146,9 +156,9 @@ body {
   <?}else{?>
 
     <div class="ui-block-c">
-         <div class="ui-bar-c"> <a style="text-decoration:none" href="#" data-transition="slide">
+         <div > <a style="text-decoration:none" href="orderdetail.php" data-transition="slide">
         <img alt="alt..." src="PYS/order.png" />
-         <p style="text-align:center;">詢價單</p>
+         <p style="text-align:center;"><span style="color:red"><?php echo $rowordercount?></span> 詢價單</p>
         </a>
         </div>
     </div>
@@ -156,7 +166,7 @@ body {
   <?}?>
 <?if($passed=="TRUE"){?>
     <div class="ui-block-a">
-        <div class="ui-bar-c"> <a href='#fix' data-ajax="false" style="text-decoration:none"  data-transition="slide">
+        <div > <a href="#fix" style="text-decoration:none"  data-transition="slide">
         <img alt="alt..." src="PYS/fix.png" />
         <p style="text-align:center;">預約維修</p>
         </a>
@@ -164,24 +174,24 @@ body {
     </div>
     <?if($level=="admin"){?>
     <div class="ui-block-b">
-        <div class="ui-bar-c"> <a style="text-decoration:none" href="#adminfixrecord" data-transition="slide">
+        <div > <a style="text-decoration:none" href="#adminfixrecord" data-transition="slide">
         <img alt="alt..." src="PYS/List.png" />
-         <p style="text-align:center;">維修紀錄</p>
+         <p style="text-align:center;"><span style="color:red"><?php echo $rowcount?></span> 維修紀錄</p>
       </a>
         </div>
     </div>
     <?}else{?>
     <div class="ui-block-b">
-        <div class="ui-bar-c"> <a style="text-decoration:none" href="#fixrecord" data-transition="slide">
+        <div > <a style="text-decoration:none" href="#fixrecord" data-transition="slide">
         <img alt="alt..." src="PYS/List.png" />
-         <p style="text-align:center;">維修紀錄</p>
+         <p style="text-align:center;"><span style="color:red"><?php echo $rowcountuser?></span> 維修紀錄</p>
       </a>
         </div>
     </div>
       <?}?>
     <?}?>
     <div class="ui-block-c">
-        <div class="ui-bar-c"> <a style="text-decoration:none" href="#member" data-transition="slide">
+        <div > <a style="text-decoration:none" href="#member" data-transition="slide">
         <img alt="alt..." src="PYS/User.png" />
          <p style="text-align:center;">會員資料</p>
         </a>
@@ -192,21 +202,23 @@ body {
     <h2>關於我們</h2>  
         <h4>公司名稱:保意興有限公司</h4> 
         <h4>聯絡人:林先生</h4> 
-        <h4>電話:<a href="tel://(04)2207-0121">(04)2207-0121</a></h4>
-        <h4>手機:<a href="tel://0910-799646">0910-799646</a></h4>  
+        <h4>電話:<a href="tel:(04)2207-0121">(04)2207-0121</a></h4>
+        <h4>手機:<a href="tel:0910-799646">0910-799646</a></h4>  
         <h4>傳真:(04)2207-0121</h4> 
-        <h4>地址:<a href="geo:0,0?q=台中市大雅區中清路1188號">台中市大雅區中清路1188號</a></h4>                    
+        <h4>地址:<a href="comgooglemaps://?q=台中市大雅區中科路1188號">台中市大雅區中科路1188號</a></h4>                    
  </div>
   </div>
 </div> 
-     <div data-role="page" id="product" data-fullscreen="false" data-add-back-btn="true" data-back-btn-text="回上一頁" >
-                        <div data-role="header" data-position="fixed">
-                <h5>PYS</h5>
-            </div>
+     <div data-role="page" id="product" data-fullscreen="false" >
+                        <div data-role="header" data-position="fixed"data-theme="b" >
+                          <button onClick="history.go(-1);return true;" data-theme="a">上一頁</button>
+      <h1 class="ui-title" tabindex="0" role="heading" aria-level="1">PYS</h1>
+     
+    </div>
                           <div data-role="collapsible" data-collapsed="false" data-theme="e">
                             <h2>產品介紹</h2>
-                            <ul data-role="listview" data-inset="true" data-theme="e" data-dividertheme="a" data-filter="true" data-filter-placeholder="請輸入....">
-                                <li data-role="list-divider">堆高機</li>
+                            <ul data-role="listview" data-inset="true"  data-dividertheme="b" data-filter="true" data-filter-placeholder="請輸入....">
+                                <li data-role="list-divider" data-theme="b">堆高機</li>
                                 <li>
                                     <a href="#toyota" data-transition="slide">
                                         <img src="PYS/TOYOTA.jpg" />
@@ -235,7 +247,7 @@ body {
                                     </a>
                                 </li>
                             </br>
-                                <li data-role="list-divider">零件</li>
+                                <li data-role="list-divider" data-theme="b">零件</li>
                                 <li>
                                     <a href="http://zh.wikipedia.org/zh-tw/%E6%96%B0%E6%A5%93%E4%B9%8B%E8%B0%B7">
                                         <img src="PYS/輪胎.jpg" />
@@ -244,25 +256,26 @@ body {
                                 </li>
                             </ul>
                         </div>
-                        <div data-role="footer" data-position="fixed">
+                        <div data-role="footer" data-position="fixed" data-theme="ui-btn-active">
                 <div data-role="navbar">
                     <ul>
                         <li><a href="#home" data-icon="home" data-transition="slide">回首頁</a></li>
                         <li><a href="#product" data-icon="gear" data-transition="slide">產品介紹</a></li>
                         <?if($passed=="TRUE"&&$level=="user"){?>
-                        <li><a href="#" data-icon="search" data-transition="slide"><span id="clicks1"style="color:red">0</span> 詢價單</a></li>
-                        <li><a href='fix.php' data-ajax="false" data-icon="grid" data-transition="slide">預約維修</a></li>
+                        <li><a href="#" data-icon="search" data-transition="slide"><span style="color:red"><?php echo $rowordercount?></span> 詢價單</a></li>
+                        <li><a href="#fix" data-ajax="false" data-icon="grid" data-transition="slide"><span style="color:red"><?php echo $rowcountuser?></span> 預約維修</a></li>
                          <?}else if($level=="admin"){?>
                          <li><a href="#showcompany" data-icon="search" data-transition="slide">廠商資料</a></li>
-                         <li><a href="#adminrecord" data-icon="edit" data-transition="slide">維修紀錄</a></li>
+                         <li><a href="#adminfixrecord" data-icon="edit" data-transition="slide"><span style="color:red"><?php echo $rowcount?></span> 維修紀錄</a></li>
                          <?}?>
                         <li><a href="#member" data-icon="info" data-transition="slide">會員資料</a></li>
                     </ul>
                 </div>
             </div>
              </div>
-             <div data-role="page" id="member" data-add-back-btn="true" data-back-btn-text="回上一頁">
-            <div data-role="header" data-position="fixed">
+             <div data-role="page" id="member" >
+            <div data-role="header" data-position="fixed"  data-theme="b" >
+              <button onClick="history.go(-1);return true;" data-theme="a">上一頁</button>
                 <h1>會員資料</h1>
             </div>
             <div data-role="content" align="center">
@@ -296,11 +309,12 @@ body {
                   <input type="email" name="email" id="email"  value="<?php echo $row{"email"} ?>"/>
                </div>
                 <input id="update" type="submit" data-theme="a" value="修改資料" />
-                <button type="button" data-theme="a" onclick="location.href='#editpassword'" data-transition="slide">修改密碼</button>
+                <button type="button" data-theme="d" onclick="location.href='#editpassword'" data-transition="slide">修改密碼</button>
                <?if($level=="admin"){?>
-               <button type="button" data-theme="a" onclick="location.href='#postnews'">發布公告</button>
+               <button type="button" data-theme="e" onclick="location.href='#postnews'">發布公告</button>
                <?}?>
-                <button type="button" data-theme="b" data-ajax="false" onclick="location.href='logoutsuccess.php'">登出</button>
+
+                <button type="button" data-theme="d" data-ajax="false" onclick="location.href='logoutsuccess.php'">登出</button>
                 </form>
                 <?}else{?>
                 <form name="vote" action="login.php" method="post" data-ajax="false">
@@ -331,11 +345,11 @@ body {
                         <li><a href="#home" data-icon="home" data-transition="slide">回首頁</a></li>
                         <li><a href="#product" data-icon="gear" data-transition="slide">產品介紹</a></li>
                         <?if($passed=="TRUE"&&$level=="user"){?>
-                        <li><a href="#" data-icon="search" data-transition="slide"><span id="clicks1"style="color:red">0</span> 詢價單</a></li>
-                        <li><a href='fix.php' data-icon="grid" data-transition="slide" data-ajax="false">預約維修</a></li>
+                        <li><a href='orderdetail.php' data-icon="search" data-transition="slide"><span style="color:red"><?php echo $rowordercount?></span> 詢價單</a></li>
+                        <li><a href="#fix" data-icon="grid" data-transition="slide" data-ajax="false">預約維修</a></li>
                          <?}else if($level=="admin"){?>
                          <li><a href="#showcompany" data-icon="search" data-transition="slide">廠商資料</a></li>
-                         <li><a href="#" data-icon="edit" data-transition="slide">維修紀錄</a></li>
+                         <li><a href="#" data-icon="edit" data-transition="slide"><span style="color:red" > <?php echo $rowcount?></span> 維修紀錄</a></li>
                          <?}?>
                         <li><a href="#member" data-icon="info" data-transition="slide">會員資料</a></li>
                     </ul>
@@ -343,12 +357,13 @@ body {
              
             </div>
         </div>
-         <div data-role="page" id="toyota" data-add-back-btn="true" data-back-btn-text="回上一頁">
-            <div data-role="header" data-position="fixed">
+         <div data-role="page" id="toyota" >
+            <div data-role="header" data-position="fixed" data-theme="b">
+              <button onClick="history.go(-1);return true;" data-theme="a">上一頁</button>
                 <h1>TOYOTA</h1>
             </div>
-    <div data-role="collapsible" data-collapsed="false" data-theme="e">
-    <ul data-role="listview" data-inset="true" data-theme="e" data-dividertheme="a" data-filter="true" data-filter-placeholder="請輸入....">
+    <div data-role="collapsible" data-collapsed="false" data-theme="a">
+    <ul data-role="listview" data-inset="true" data-theme="a" data-dividertheme="b" data-filter="true" data-filter-placeholder="請輸入....">
    
                                 <li data-role="list-divider">TOYOTA</li>
 
@@ -358,7 +373,7 @@ for($i=1;$i<=mysql_num_rows($datatoyota);$i++)
 ?>
 
                                 <li <?if($passed=="TRUE"&&$level=="user"){?>data-icon="plus"<?}else{?>  data-icon="false"<?}?>     onClick="onClick()">
-                                    <a <?if($level=="user"){?>href='orderproduct.php?productid=<?php echo $rs["id"]?>'<?}?>>
+                                    <a <?if($level=="user"){?>href='orderproduct.php?productid=<?php echo $rs["id"]?>' data-ajax="false"<?}?>>
                                         <img class="ui-li-thumb2" src="<?php echo $rs["picture"]?>"/>
                                         <h1><?php echo $rs["productname"]?></h1>
                                         <p>重量:<?php echo $rs["weigh"]?></p>
@@ -379,20 +394,21 @@ for($i=1;$i<=mysql_num_rows($datatoyota);$i++)
                     <ul>
                         <li><a href="#home" data-icon="home" data-transition="slide">回首頁</a></li>
                        <?if($passed=="TRUE"&&$level=="user"){?>
-                        <li><a href="#" data-icon="search" data-transition="slide"><span id="clicks"style="color:red">0</span> 詢價單</a></li>
+                        <li><a href="orderdetail.php" data-icon="search" data-transition="slide"><span style="color:red"><?php echo $rowordercount?></span> 詢價單</a></li>
                         <?}?>
                     </ul>
                 </div>
             </div>
             </div>
 
-            <div data-role="page" id="news" data-add-back-btn="true" data-back-btn-text="回上一頁">
-            <div data-role="header" data-position="fixed">
+            <div data-role="page" id="news" >
+            <div data-role="header" data-position="fixed"data-theme="b">
+              <button onClick="history.go(-1);return true;" data-theme="a">上一頁</button>
                 <h1>公告欄</h1>
             </div>
-            <div data-role="collapsible" data-collapsed="false" data-theme="b">
+            <div data-role="collapsible" data-collapsed="false" data-theme="e">
                             <h2>最新消息</h2>
-                            <ul data-role="listview" data-inset="true" data-theme="e" data-dividertheme="a" data-filter="true" data-filter-placeholder="請輸入....">
+                            <ul data-role="listview" data-inset="true"  data-dividertheme="a" data-filter="true" data-filter-placeholder="請輸入....">
                                
 <?php
 for($i=1;$i<=mysql_num_rows($datanews);$i++)
@@ -411,9 +427,9 @@ for($i=1;$i<=mysql_num_rows($datanews);$i++)
  
 </ul> 
 </div>
- <div data-role="collapsible" data-collapsed="true" data-theme="b">
+ <div data-role="collapsible" data-collapsed="true" data-theme="e">
                             <h2>最新活動</h2>
-                            <ul data-role="listview" data-inset="true" data-theme="e" data-dividertheme="a" data-filter="true" data-filter-placeholder="請輸入....">
+                            <ul data-role="listview" data-inset="true" data-dividertheme="a" data-filter="true" data-filter-placeholder="請輸入....">
                      <?php
 for($i=1;$i<=mysql_num_rows($datanewsa);$i++)
 { $rs=mysql_fetch_assoc($datanewsa);
@@ -445,8 +461,9 @@ for($i=1;$i<=mysql_num_rows($datanewsa);$i++)
 
 
 
- <div data-role="page" id="editpassword" data-add-back-btn="true" data-back-btn-text="回上一頁">
-            <div data-role="header" data-position="fixed">
+ <div data-role="page" id="editpassword" >
+            <div data-role="header" data-position="fixed" data-theme="b">
+              <button onClick="history.go(-1);return true;" data-theme="a">上一頁</button>
                 <h1>修改密碼</h1>
             </div>
              <div data-role="content">
@@ -470,8 +487,9 @@ for($i=1;$i<=mysql_num_rows($datanewsa);$i++)
              </div>
             </div>
 
- <div data-role="page" id="postnews" data-add-back-btn="true" data-back-btn-text="回上一頁">
-<div data-role="header" data-theme="a" style="text-align:center;"  data-position="fixed">             
+ <div data-role="page" id="postnews" >
+<div data-role="header" data-theme="a" style="text-align:center;"  data-position="fixed" data-theme="b">   
+<button onClick="history.go(-1);return true;" data-theme="a">上一頁</button>          
                 <h1>發布公告</h1>
             </div>
             <div data-role="content" align="center">
@@ -483,13 +501,14 @@ for($i=1;$i<=mysql_num_rows($datanewsa);$i++)
   </select>
   <input type="number" name="time" id="time" min="1" max="5"  placeholder="new顯示天數"></input>
   <textarea class="ckeditor" rows="5" id="content" name="content" placeholder="內容"></textarea>
-  <button type="submit" class="btn btn-primary" data-theme="b">Submit</button>
+  <button type="submit" class="btn btn-primary" data-theme="b">發布</button>
   </form>
 </div> 
 </div> 
 
- <div data-role="page" id="showcompany" data-add-back-btn="true" data-back-btn-text="回上一頁">
-                 <div data-role="header" data-position="fixed">
+ <div data-role="page" id="showcompany" >
+                 <div data-role="header" data-position="fixed"data-theme="b">
+                  <button onClick="history.go(-1);return true;" data-theme="a">上一頁</button>
                 <h1>廠商資料</h1>
             </div>
             <div data-role="collapsible" data-collapsed="false" data-theme="e">
@@ -525,8 +544,8 @@ for($i=1;$i<=mysql_num_rows($datacompany);$i++)
          
 
 <div data-role="page" id="fix">
-            <div data-role="header" data-position="fixed">
-
+           <div data-role="header" data-position="fixed" data-theme="b">
+            <button onClick="history.go(-1);return true;" data-theme="a">上一頁</button>
                 <h1>預約維修單</h1>
             </div>
             <div data-role="content" align="center">
@@ -559,13 +578,14 @@ for($i=1;$i<=mysql_num_rows($datacompany);$i++)
             <label for="content2">損壞情況</label>
           <textarea class="ckeditor" rows="5" id="content2" name="content2"></textarea>
                </div>
-                <input id="post" type="submit" data-theme="a" value="送出" />
+                <input id="post" type="submit" data-theme="d" value="送出" />
                 </form>
             </div>
         </div>
 
-        <div data-role="page" id="signup" data-add-back-btn="true" data-back-btn-text="回上一頁">
-            <div data-role="header" data-position="fixed">
+        <div data-role="page" id="signup">
+            <div data-role="header" data-position="fixed"data-theme="b">
+              <button onClick="history.go(-1);return true;" data-theme="a">上一頁</button>
                 <h1>會員註冊</h1>
             </div>
             <form name="signup" action="signup.php" method="post" data-ajax="false">
@@ -584,7 +604,41 @@ for($i=1;$i<=mysql_num_rows($datacompany);$i++)
 </div>
 <div data-role="fieldcontain">
 <label for="cname2">公司名稱</label>
-  <select class="form-control" name="cname2" id="cname2">
+<input name="selectname" id="selectname" type="text" >
+<label for="cname3">公司名稱</label>
+<script>
+jQuery.fn.filterByText = function(textbox) {
+    return this.each(function() {
+        var select = this;
+        var options = [];
+        $(select).find('option').each(function() {
+            options.push({value: $(this).val(), text: $(this).text()});
+        });
+        $(select).data('options', options);
+
+        $(textbox).bind('change keyup', function() {
+            var options = $(select).empty().data('options');
+            var search = $.trim($(this).val());
+            var regex = new RegExp(search,"gi");
+
+            $.each(options, function(i) {
+                var option = options[i];
+                if(option.text.match(regex) !== null) {
+                    $(select).append(
+                        $('<option>').text(option.text).val(option.value)
+                    );
+                }
+            });
+        });
+    });
+};
+</script>
+<script>
+$(function() {
+    $('#cname3').filterByText($('#selectname'));
+});
+</script>
+  <select class="form-control" name="cname3" id="cname3">
 <?php
 for($i=1;$i<=mysql_num_rows($signupcompany);$i++)
 { $rs=mysql_fetch_assoc($signupcompany);
@@ -593,6 +647,7 @@ for($i=1;$i<=mysql_num_rows($signupcompany);$i++)
 <?php }?>
 
   </select>
+  
 </div>
 <div data-role="fieldcontain">
 <label for="uname2">姓名</label>
@@ -623,8 +678,9 @@ for($i=1;$i<=mysql_num_rows($signupcompany);$i++)
             </div>
             </div>
 
- <div data-role="page" id="fixrecord" data-add-back-btn="true" data-back-btn-text="回上一頁">
-                 <div data-role="header" data-position="fixed">
+ <div data-role="page" id="fixrecord">
+                 <div data-role="header" data-position="fixed"  data-theme="b">
+                  <button onClick="history.go(-1);return true;" data-theme="a">上一頁</button>
                 <h1>維修紀錄</h1>
             </div>
              <div data-role="main" class="ui-content">
@@ -677,8 +733,9 @@ for($i=1;$i<=mysql_num_rows($fixrecord);$i++)
             </div>
             </div>
 
-            <div data-role="page" id="adminfixrecord" data-add-back-btn="true" data-back-btn-text="回上一頁">
-                 <div data-role="header" data-position="fixed">
+            <div data-role="page" id="adminfixrecord">
+                 <div data-role="header" data-position="fixed"   data-theme="b">
+                  <button onClick="history.go(-1);return true;" data-theme="a">上一頁</button>
                 <h1>維修紀錄</h1>
             </div>
              <div data-role="main" class="ui-content">

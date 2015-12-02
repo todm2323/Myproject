@@ -9,7 +9,7 @@
     $uname = $_POST["uname2"];
     $cellphone = $_POST["cellphone2"];
     $email = $_POST["email2"];
-    $cname = $_POST["cname2"];
+    $cname = $_POST["cname3"];
     $link = create_connection();
     //建立資料連接
     if($username==""||$password==""||$repassword==""){
@@ -17,7 +17,7 @@
     echo "window.alert('請輸入完整資料')"; 
     echo "</SCRIPT>"; 
     echo "<script language='javascript'>"; 
-    echo "location.href='index.php#signup'"; 
+    echo "history.back();";  
     echo "</script>"; 
     }
     else if(strlen($password)<=5){
@@ -25,7 +25,7 @@
     echo "window.alert('密碼設定請超過5個字元')"; 
     echo "</SCRIPT>"; 
     echo "<script language='javascript'>"; 
-    echo "location.href='index.php#signup'"; 
+    echo "history.back();"; 
     echo "</script>"; 
     }
     else if($password!=$repassword){
@@ -33,7 +33,7 @@
     echo "window.alert('確認密碼錯誤，請重新輸入')"; 
     echo "</SCRIPT>"; 
     echo "<script language='javascript'>"; 
-    echo "location.href='index.php#signup'"; 
+    echo "history.back();"; 
     echo "</script>"; 
     }
     else{
