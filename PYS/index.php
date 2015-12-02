@@ -330,7 +330,7 @@ body {
 <input type="password" name="password" id="inp_tw11" />
 </div>
 <input id="login" type="submit" data-theme="b" value="登入" />
-<button type="button" data-theme="c" onclick="location.href='#'" data-transition="slide">忘記密碼</button>
+<button type="button" data-theme="c" onclick="location.href='#forgetpassword'" data-transition="slide">忘記密碼</button>
 <button type="button" data-theme="a" onclick="location.href='#signup'" data-transition="slide">註冊</button>
 </div>
 
@@ -664,7 +664,7 @@ for($i=1;$i<=mysql_num_rows($signupcompany);$i++)
 
 <input id="signup" type="submit" data-theme="b" value="註冊" />
 <button type="button" data-theme="c" onclick="location.href='#member'">登入</button>
-<button type="button" data-theme="c" onclick="location.href='#'" data-transition="slide">忘記密碼</button>
+<button type="button" data-theme="c" onclick="location.href='#forgetpassword'" data-transition="slide">忘記密碼</button>
 </form>
 
 </div>
@@ -781,6 +781,33 @@ for($i=1;$i<=mysql_num_rows($adminfixrecord);$i++)
 
   </div>
 <div data-role="footer" data-position="fixed">
+                <div data-role="navbar">
+                    <ul>
+                        <li><a href="#home" data-icon="home" data-transition="slide">回首頁</a></li>
+                        <li><a href="#member" data-icon="edit" data-transition="slide">會員資料</a></li>
+                    </ul>
+                </div>
+            </div>
+</div>
+            <div data-role="page" id="forgetpassword">
+                 <div data-role="header" data-position="fixed"   data-theme="b">
+                  <button onClick="history.go(-1);return true;" data-theme="a">上一頁</button>
+                <h1>忘記密碼</h1>
+            </div>
+             <form name="forgetpassword" action="forgetpassword.php" method="post" data-ajax="false">
+             <div data-role="content">
+                <div data-role="fieldcontain">
+                <label for="setusername">帳號</label>
+            <input type="text" name="setusername" id="setusername"/>
+            </div>
+             <div data-role="fieldcontain">
+                <label for="setemail">註冊的Email</label>
+            <input type="email" name="setemail" id="setemail"/>
+              </div>
+              <input id="search" type="submit" data-theme="b" value="查詢" />
+                </div>
+              </form>
+            <div data-role="footer" data-position="fixed">
                 <div data-role="navbar">
                     <ul>
                         <li><a href="#home" data-icon="home" data-transition="slide">回首頁</a></li>
