@@ -26,7 +26,6 @@ $email=mysql_result($result2, 0, "email");
 <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
 <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
 <script src="back.js"></script>
-
 </head>
 <body>
 <div data-role="page" data-add-back-btn="true" align="center">
@@ -71,7 +70,7 @@ for($i=1;$i<=mysql_num_rows($sql);$i++)
                </div>
                    <div data-role="fieldcontain">
              <label for="bei">備註</label>
-             <textarea class="ckeditor" rows="5" id="bei" name="bei" placeholder="e.g.用途"></textarea>
+             <textarea class="ckeditor" rows="5" id="eg" name="eg" placeholder="e.g.用途"></textarea>
               </div>
              <div data-role="fieldcontain">
              <label for="uname">姓名</label>

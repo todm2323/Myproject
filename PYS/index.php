@@ -16,11 +16,14 @@
    $row = mysql_fetch_assoc($result);
    $date = date ("Y/m/d" ,mktime(date('m'), date('d'), date('Y'))) ; 
    $datatoyota=mysql_query("select * from product where brand='TOYOTA'");
+   $datakomatsu=mysql_query("select * from product where brand='KOMATSU'");
    $datanews=mysql_query("select * from news where class='新聞' ORDER BY date DESC");
    $datanewsa=mysql_query("select * from news where class='活動' ORDER BY date DESC");
    $datacompany=mysql_query("select * from tbl_user");
    $signupcompany=mysql_query("select * from tbl_user where username=''");
    $fixrecord=mysql_query("select * from maintain where  uid = '$id' ORDER BY date DESC");
+   $priceask=mysql_query("select * from price  ORDER BY date DESC");
+   $cpriceask=mysql_query("select * from price where  uid = '$id' ORDER BY date DESC");
    $adminfixrecord=mysql_query("select * from maintain ORDER BY date DESC");
    $sqlcount = "select * from maintain where state='待維修'";
    $sqlordercount = "select * from orders  Where uid = '$id'";
@@ -226,21 +229,21 @@ body {
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="http://tw.meetgee.com/Topic/List.aspx?GameID=589">
+                                    <a href="#">
                                         <img src="PYS/NYK.jpg" />
                                         <h3>NYK</h3>
                                        
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="http://www.8591.com.tw/wareList-sellList-859.html">
+                                    <a href="#">
                                         <img src="PYS/TCM.jpg" />
                                         <h3>TCM</h3>
                                         
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="http://zh.wikipedia.org/zh-tw/%E6%96%B0%E6%A5%93%E4%B9%8B%E8%B0%B7">
+                                    <a href="#komatsu">
                                         <img src="PYS/KOMATSU.jpg" />
                                         <h3>KOMATSU</h3>
                                         
@@ -249,7 +252,7 @@ body {
                             </br>
                                 <li data-role="list-divider" data-theme="b">零件</li>
                                 <li>
-                                    <a href="http://zh.wikipedia.org/zh-tw/%E6%96%B0%E6%A5%93%E4%B9%8B%E8%B0%B7">
+                                    <a href="#">
                                         <img src="PYS/輪胎.jpg" />
                                         <h3>輪胎</h3>
                                     </a>
@@ -308,6 +311,12 @@ body {
             <label for="email">E-mail</label>
                   <input type="email" name="email" id="email"  value="<?php echo $row{"email"} ?>"/>
                </div>
+               <?if($level=="admin"){?>
+                <button type="button" data-theme="d" onclick="location.href='#adminpriceask'" data-transition="slide">詢價紀錄</button>
+                <?}?>
+                <?if($level=="user"){?>
+                <button type="button" data-theme="d" onclick="location.href='#priceask'" data-transition="slide">詢價紀錄</button>
+                <?}?>
                 <input id="update" type="submit" data-theme="a" value="修改資料" />
                 <button type="button" data-theme="d" onclick="location.href='#editpassword'" data-transition="slide">修改密碼</button>
                <?if($level=="admin"){?>
@@ -370,6 +379,50 @@ body {
 <?php
 for($i=1;$i<=mysql_num_rows($datatoyota);$i++)
 { $rs=mysql_fetch_assoc($datatoyota);
+?>
+
+                                <li <?if($passed=="TRUE"&&$level=="user"){?>data-icon="plus"<?}else{?>  data-icon="false"<?}?>     onClick="onClick()">
+                                    <a <?if($level=="user"){?>href='orderproduct.php?productid=<?php echo $rs["id"]?>' data-ajax="false"<?}?>>
+                                        <img class="ui-li-thumb2" src="<?php echo $rs["picture"]?>"/>
+                                        <h1><?php echo $rs["productname"]?></h1>
+                                        <p>重量:<?php echo $rs["weigh"]?></p>
+                                        <p>揚高:<?php echo $rs["mast"]?></p>
+                                        <p>編號:<?php echo $rs["number"]?></p>
+                                        <p>年分:<?php echo $rs["year"]?></p>
+                                        <p>狀態:<?php echo $rs["state"]?></p>
+                                        <?if($passed=="TRUE"&&$level=="user"){?>
+                                        <span class="ui-li-count">加入詢價單</span>   
+                                        <?}?>                            
+                                    </a >
+                                </li>
+<?php }?>
+</ul> 
+</div>
+<div data-role="footer" data-position="fixed">
+                <div data-role="navbar">
+                    <ul>
+                        <li><a href="#home" data-icon="home" data-transition="slide">回首頁</a></li>
+                       <?if($passed=="TRUE"&&$level=="user"){?>
+                        <li><a href="orderdetail.php" data-icon="search" data-transition="slide"><span style="color:red"><?php echo $rowordercount?></span> 詢價單</a></li>
+                        <?}?>
+                    </ul>
+                </div>
+            </div>
+            </div>
+
+             <div data-role="page" id="komatsu" >
+            <div data-role="header" data-position="fixed" data-theme="b">
+              <button onClick="history.go(-1);return true;" data-theme="a">上一頁</button>
+                <h1>KOMATSU</h1>
+            </div>
+    <div data-role="collapsible" data-collapsed="false" data-theme="a">
+    <ul data-role="listview" data-inset="true" data-theme="a" data-dividertheme="b" data-filter="true" data-filter-placeholder="請輸入....">
+   
+                                <li data-role="list-divider">KOMATSU</li>
+
+<?php
+for($i=1;$i<=mysql_num_rows($datakomatsu);$i++)
+{ $rs=mysql_fetch_assoc($datakomatsu);
 ?>
 
                                 <li <?if($passed=="TRUE"&&$level=="user"){?>data-icon="plus"<?}else{?>  data-icon="false"<?}?>     onClick="onClick()">
@@ -808,6 +861,113 @@ for($i=1;$i<=mysql_num_rows($adminfixrecord);$i++)
                 </div>
               </form>
             <div data-role="footer" data-position="fixed">
+                <div data-role="navbar">
+                    <ul>
+                        <li><a href="#home" data-icon="home" data-transition="slide">回首頁</a></li>
+                        <li><a href="#member" data-icon="edit" data-transition="slide">會員資料</a></li>
+                    </ul>
+                </div>
+            </div>
+            </div>
+            <div data-role="page" id="adminpriceask">
+                 <div data-role="header" data-position="fixed"  data-theme="b">
+                  <button onClick="history.go(-1);return true;" data-theme="a">上一頁</button>
+                <h1>詢價紀錄</h1>
+            </div>
+             <div data-role="main" class="ui-content">
+<form>
+    <input id="filterTable-input" data-type="search">
+</form>
+<style>
+tr {
+    border-bottom: 1px solid #d6d6d6;
+}
+</style>
+    <table data-role="table" class="ui-responsive ui-shadow" data-mode="columntoggle" data-filter="true" data-input="#filterTable-input" data-column-btn-text="更多欄位..">
+      <thead>
+        <tr>
+          <th data-priority="1"></th>
+          <th data-priority="1">日期</th>
+          <th data-priority="1">公司</th>
+          <th data-priority="2">用途</th>
+          <th data-priority="3">細節</th>
+          <th data-priority="4">備註</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+          <?php
+for($i=1;$i<=mysql_num_rows($priceask);$i++)
+{ $rs=mysql_fetch_assoc($priceask);
+?>
+<tr onclick="location.href='fullpriceask.php?askid=<?php echo $rs["id"]?>'">
+          <td ><?php if($rs["state"]=="已回復"){echo "<img src='PYS/green.png'/>";}else{echo "<img src='PYS/red.png'/>";}?></td>
+          <td><?php echo $rs["date"]?></td>
+          <td><?php echo $rs["cname2"]?></td>
+          <td><?php echo $rs["usen"]?></td>
+          <td><?php echo $rs["detail"]?></td>
+          <td><?php echo $rs["eg"]?></td>
+           </tr>
+ <?php }?>
+       
+      </tbody>
+    </table>
+
+  </div>
+<div data-role="footer" data-position="fixed">
+                <div data-role="navbar">
+                    <ul>
+                        <li><a href="#home" data-icon="home" data-transition="slide">回首頁</a></li>
+                        <li><a href="#member" data-icon="edit" data-transition="slide">會員資料</a></li>
+                    </ul>
+                </div>
+            </div>
+            </div>
+
+             <div data-role="page" id="priceask">
+                 <div data-role="header" data-position="fixed"  data-theme="b">
+                  <button onClick="history.go(-1);return true;" data-theme="a">上一頁</button>
+                <h1>詢價紀錄</h1>
+            </div>
+             <div data-role="main" class="ui-content">
+<form>
+    <input id="filterTable-input" data-type="search">
+</form>
+<style>
+tr {
+    border-bottom: 1px solid #d6d6d6;
+}
+</style>
+    <table data-role="table" class="ui-responsive ui-shadow" data-mode="columntoggle" data-filter="true" data-input="#filterTable-input" data-column-btn-text="更多欄位..">
+      <thead>
+        <tr>
+          <th data-priority="1"></th>
+          <th data-priority="1">日期</th>
+          <th data-priority="1">用途</th>
+          <th data-priority="3">細節</th>
+          <th data-priority="4">備註</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+          <?php
+for($i=1;$i<=mysql_num_rows($cpriceask);$i++)
+{ $rs=mysql_fetch_assoc($cpriceask);
+?>
+<tr >
+          <td ><?php if($rs["state"]=="已回復"){echo "<img src='PYS/green.png'/>";}else{echo "<img src='PYS/red.png'/>";}?></td>
+          <td><?php echo $rs["date"]?></td>
+          <td><?php echo $rs["usen"]?></td>
+          <td><?php echo $rs["detail"]?></td>
+          <td><?php echo $rs["eg"]?></td>
+           </tr>
+ <?php }?>
+       
+      </tbody>
+    </table>
+
+  </div>
+<div data-role="footer" data-position="fixed">
                 <div data-role="navbar">
                     <ul>
                         <li><a href="#home" data-icon="home" data-transition="slide">回首頁</a></li>
