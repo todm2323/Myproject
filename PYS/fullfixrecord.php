@@ -28,7 +28,8 @@ function onBackKeyDown() {
 <div data-role="page" align="center">
 
   
-            <div data-role="header">
+            <div data-role="header" data-theme="b">
+              <button onClick="history.go(-1);return true;" data-theme="a">上一頁</button>
                <h1><?php echo $row["cname"]?></h1>
                 <span><?php echo $row["date"]?></span>
 
@@ -63,7 +64,16 @@ td {
                </select>
           </td>
           <td><input type="date"name="fixdate" id="fixdate"/></td>
-          <td><input type="text"name="fixuname" id="fixuname"/></td>
+          <td> <select class="form-control" name="fixuname" id="fixuname">
+
+    <?php 
+    $sql2="SELECT name FROM employee";
+    $result2 = execute_sql("mydatabase", $sql2, $link);
+        while ($ro = mysql_fetch_array($result2)) {
+    echo "<option value='" . $ro['name'] . "'>" . $ro['name'] . "</option>";
+}
+    ?>
+    </select></td>
            </tr>
       </tbody>
     </table>

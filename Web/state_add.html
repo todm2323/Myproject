@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="generator"
+    content="HTML Tidy for HTML5 (experimental) for Windows https://github.com/w3c/tidy-html5/tree/c63cc39" />
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+    <title>開通會員</title>
+	
+    <link rel="stylesheet" href="css/bootstrap.css" />
+    <script src="js/jquery-2.1.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <style>
+p { font-family:Microsoft JhengHei; }
+font { font-family:Microsoft JhengHei; }
+h { font-family:Microsoft JhengHei; }
+h1 { font-family:Microsoft JhengHei; }
+h2 { font-family:Microsoft JhengHei; }
+h3 { font-family:Microsoft JhengHei; }
+h4 { font-family:Microsoft JhengHei; }
+h5 { font-family:Microsoft JhengHei; }
+</style>
+  </head>
+<header><center> <img src="images/state.png" /></center></header>
+<h4 align="center">請輸入您的帳號和啟用碼</h4>
+<div class="container">
+ <form method="post" action="state.php" method="post">
+      <table class="table table-bordered" align="center">
+        <tr><td class="col-sm-2" align="right" > <label for="inputaccount" class="control-label">帳號：</label></td>
+          <td class="col-sm-4" align="right"><div class="col-sm-8"><input type="text" class="form-control" name="username" ></div></td>
+        </tr>
+        <tr><td class="col-sm-2" align="right" > <label for="inputstate" class="control-label">啟用碼：</label></td>
+          <td class="col-sm-4" align="right"><div class="col-sm-8"><input type="text" class="form-control" name="state" ></div></td>
+        </tr>
+        <tr>
+          <td colspan="2" align="center"> 
+          <button type="submit" class="btn btn-success" >啟用</button> 
+	<button type="reset" class="btn btn-default">重新填寫</button> 
+	<button type="button" class="btn btn-primary" onclick="location.href='pyshome.php'">返回</button> 
+          </td>
+        </tr>
+      </table>
+    </form>
+</div>
+  </body>
+</html>

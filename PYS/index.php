@@ -126,7 +126,7 @@ body {
 <body>
       <div data-role="page" id="home">
 <div data-role="header" data-theme="a" style="text-align:center;">
-                <img src="PYS/icon.jpg" style="width: 100%;max-height: 100%" align="center" />
+                <img src="PYS/icon.jpg" style="width: 100%;max-height: 100%" align="center" onclick="location.href='javascript:window.location.reload()'"/>
             </div>
 
   <div data-role="main" class="ui-content">
@@ -147,6 +147,7 @@ body {
         </a>
         </div>
     </div>
+    
     <?if($passed=="TRUE"){?>
     <?if($level=="admin"){?>
     <div class="ui-block-c">
@@ -338,6 +339,7 @@ body {
 <label for="inp_tw11">密碼</label>
 <input type="password" name="password" id="inp_tw11" />
 </div>
+
 <input id="login" type="submit" data-theme="b" value="登入" />
 <button type="button" data-theme="c" onclick="location.href='#forgetpassword'" data-transition="slide">忘記密碼</button>
 <button type="button" data-theme="a" onclick="location.href='#signup'" data-transition="slide">註冊</button>

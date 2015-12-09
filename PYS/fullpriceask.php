@@ -28,8 +28,9 @@ function onBackKeyDown() {
 <div data-role="page" align="center">
 
   
-            <div data-role="header">
-               <h1><?php echo $row["cname"]?></h1>
+            <div data-role="header" data-theme="b">
+              <button onClick="history.go(-1);return true;" data-theme="a">上一頁</button>
+               <h1><?php echo $row["cname2"]?></h1>
                 <span><?php echo $row["date"]?></span>
 
             </div>
@@ -44,7 +45,6 @@ td {
       <thead>
         <tr>
           <th >日期</th>
-          <th >公司</th>
           <th >用途</th>
           <th >細節</th>
           <th >備註</th>
@@ -55,7 +55,6 @@ td {
 <tr>
          
           <td><?php echo $row["date"]?></td>
-          <td><?php echo $row["cname"]?></td>
           <td><?php echo $row["usen"]?></td>
           <td><?php echo $row["detail"]?></td>
           <td><?php echo $row["eg"]?></td>
